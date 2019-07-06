@@ -1,6 +1,9 @@
 package com.miaoshaproject.controller;
 
 import com.miaoshaproject.controller.viewobject.UserVO;
+import com.miaoshaproject.error.BusinessException;
+import com.miaoshaproject.error.EmBusinessError;
+import com.miaoshaproject.response.CommonReturnType;
 import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
 import org.springframework.beans.BeanUtils;
@@ -19,10 +22,16 @@ public class UserController {
 
     @RequestMapping("/get")
     @ResponseBody
-    public UserVO getUser(@RequestParam(name = "id") Integer id){
+    public CommonReturnType getUser(@RequestParam(name = "id") Integer id) throws BusinessException {
         //调用service服务获取对应的id的用户对象并返回给前端
         UserModel userModel = userService.getUserById(id);
-        return convertFromModel(userModel);
+
+        //若获取的对应的用户信息不存在
+        if (userModel == null){
+            throw new BusinessException(EmBusinessError.USER_NOT_EXIST);
+        }
+        UserVO vo =  convertFromModel(userModel);
+        return CommonReturnType.create(vo);
 
     }
 
