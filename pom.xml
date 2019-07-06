@@ -33,7 +33,7 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.41</version>
+      <version>8.0.15</version>
     </dependency>
 
     <!--数据库连接池-->
@@ -62,12 +62,16 @@
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
-
-        <!--配置mybatis自动生成器-->
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+        <!--自动生成文件插件,mybatis generator-->
         <plugin>
           <groupId>org.mybatis.generator</groupId>
           <artifactId>mybatis-generator-maven-plugin</artifactId>
           <version>1.3.5</version>
+
           <dependencies>
             <dependency>
               <groupId>org.mybatis.generator</groupId>
@@ -77,24 +81,26 @@
             <dependency>
               <groupId>mysql</groupId>
               <artifactId>mysql-connector-java</artifactId>
-              <version>5.1.41</version>
+              <version>8.0.15</version>
             </dependency>
           </dependencies>
+
           <executions>
             <execution>
-              <id>mybatis.generator</id>
+              <id>mybatis generator</id>
               <phase>package</phase>
               <goals>
                 <goal>generate</goal>
               </goals>
             </execution>
           </executions>
+
           <configuration>
             <!--允许移动生成的文件-->
             <verbose>true</verbose>
-            <!--允许自动覆盖文件-->
-            <!--慎用-->
-            <overwrite>true</overwrite>
+            <!--允许自动覆盖文件，这里设置为false，重新运行generator之后不会覆盖之前的Mapper等文件-->
+            <overwrite>false</overwrite>
+            <!--配置文件路径-->
             <configurationFile>
               src/main/resources/mybatis-generator.xml
             </configurationFile>
