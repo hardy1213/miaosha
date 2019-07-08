@@ -9,7 +9,7 @@ public class BusinessException extends Exception implements CommonError {
         this.commonError = commonError;
     }
 
-    public BusinessException(String message, CommonError commonError) {
+    public BusinessException(CommonError commonError,String message) {
         super();
         this.commonError = commonError;
         this.commonError.setErrorMsg(message);
